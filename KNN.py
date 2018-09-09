@@ -1,6 +1,6 @@
 import numpy as np
 import load_csv
-
+import matplotlib.pyplot as plt
 def distance_L1(x1,x2):
   # x1 and x2 can be in different shapes on the sample dim
   # if one of them is the test point and the other is the whole training set, then the minimum distance is in the returned distance array
@@ -37,11 +37,10 @@ def KNN(x,train,K=3):
   [_,_,x]=std_normalization(x,mean_std=[mean,std])
   dist=distance_L2(x,train_inputs)
   sorted_indices=np.argsort(dist,axis=0)
-  print(sorted_indices[0])
   bin_results=np.bincount(np.int32(train[sorted_indices[:K]][-1]))
   return np.float32(np.argmax(bin_results))
 
-def acc(pred):
+def accuracy(pred):
   answer=load_csv.csv_reader("./pima/test_answer.csv")
   correct=0
   for pred_row,answer_row in zip(pred[1:],answer[1:]):
@@ -49,6 +48,11 @@ def acc(pred):
       correct+=1
   return correct/(len(answer)-1)
   
+def predict(test_inputs,K):  
+  pred=[["ID","Outcome"]]  
+  for i in range(len(test_inputs)):
+    pred.append([test_inputs[i][0],KNN(test_inputs[i][1:],train,K=K)])
+  return pred
 
 if __name__=="__main__":
   train_load=load_csv.csv_reader("./pima/train.csv")
@@ -57,12 +61,16 @@ if __name__=="__main__":
   
   train=np.array(train_load[1:])
   train=train[:,1:]
-  
-  pred=[["ID","Outcome"]]  
-  for i in range(len(test_load[1:])):
-    pred.append([test_load[i+1][0],KNN(test_load[i+1][1:],train,K=19)])
-  print(acc(pred))
-  load_csv.csv_writer(pred,"./pima/KNN_pred.csv")
+  test_inputs=test_load[1:]
 
+  acc=[]
+  pred=[]
+  for k in range(1,201,2):
+    pred.append(predict(test_inputs,k))
+    acc.append(accuracy(pred[-1]))
+  print(acc)
+  plt.plot(list(range(1,201,2)),acc)
+  plt.show()
+  load_csv.csv_writer(pred[0],"./pima/KNN_pred.csv")
 
 
