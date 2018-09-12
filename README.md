@@ -10,3 +10,5 @@ notice that the data downloaded and submitted to the kaggle should all be like t
 [100, 30, ... , 2100.90 ] ]
 
 test accuracy around 0.64
+
+![alt text](https://github.com/mummy2358/KNN_pima/edit/master/README.md)
