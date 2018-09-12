@@ -11,4 +11,4 @@ notice that the data downloaded and submitted to the kaggle should all be like t
 
 test accuracy around 0.64
 
-![K-test accuracy](https://github.com/mummy2358/KNN_pima/master/Figure_1-1.jpg)
+![K-test accuracy](https://github.com/mummy2358/KNN_pima/blob/master/Figure_1-1.png)
